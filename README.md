@@ -23,10 +23,12 @@ This cordova plugin enables you to use Android Account Manager and iOS Keychain 
 
 It's possible to moddify this plugins to allow multiple accounts.
 
+By default, this plugin cypher the key and message before setting data into Account Manager with AES 256 bits (Android only).
+
 ## Installation
 
 ```
-cordova plugin add https://github.com/kunder-lab/cordova-plugin-kunder-accountmanager
+cordova plugin add https://github.com/kunder-lab/cordova-plugin-kunder-accountmanager.git#1.0.0 (the lastest stable version)
 ```
 
 ## Account Manager settings
@@ -46,6 +48,7 @@ You need to add the following settings in your config.xml file for Android Accou
 
 ## Methods
 
+- initWithKey: register the encryptionKey for AES encryption. It must be called before other Account Manager methods
 - registerAccount: register an user in Account Manager
 - removeAccount: remove an account from Account Manager (Android) and remove all data from keychain (iOS)
 - getUserAccount: returns an String with account name if account exist
@@ -60,6 +63,7 @@ You need to add the following settings in your config.xml file for Android Accou
 - accountType: the same account type unique identifier set in config.xml file
 - group (Nullable): group identifier. Only for iOS shared keychain
 - data: key-value object
+- encryptionKey: the key used to encrypt/decrypt key and value data. 
 
 ## Notes
 
@@ -67,6 +71,7 @@ You need to add the following settings in your config.xml file for Android Accou
 - You can delete account from Account Manager.
 - removeAccount remove all keychain data from your app.
 - You can not set user data to Account Manager if it doesn't have an account for your identifier.
+- You need to call initWithKey method before other Account Manager method, otherwise it will not work (Android only).
 
 ## License
 
