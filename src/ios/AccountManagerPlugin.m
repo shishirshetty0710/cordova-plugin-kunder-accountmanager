@@ -40,8 +40,13 @@
     @try{
         /*Intentando guardar el usuario y contraseña en el keychain*/
         self.MyKeychainWrapper = [[KeychainWrapper alloc]initWithService:service withGroup:group withKey:@"userAccount"];
-        if(![self.MyKeychainWrapper insertData:userAccount])
-            [self.MyKeychainWrapper updateData:userAccount];
+        if(![self.MyKeychainWrapper insertData:userAccount]) {
+            if (![self.MyKeychainWrapper updateData:userAccount]) {
+                CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString: @"No se puede guardar el dato en el keychain"];
+                [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+                return;
+            }
+        }
                 
         self.MyKeychainWrapper = [[KeychainWrapper alloc]initWithService:service withGroup:group withKey:@"password"];
         if(![self.MyKeychainWrapper insertData:password])
