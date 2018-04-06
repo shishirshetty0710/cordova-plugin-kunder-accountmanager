@@ -28,7 +28,7 @@ By default, this plugin cypher the key and message before setting data into Acco
 ## Installation
 
 ```
-cordova plugin add https://github.com/kunder-lab/cordova-plugin-kunder-accountmanager.git#1.0.0 (the lastest stable version)
+cordova plugin add https://github.com/kunder-lab/cordova-plugin-kunder-accountmanager.git#1.0.1 (the lastest stable version)
 ```
 
 ## Account Manager settings
@@ -75,5 +75,5 @@ You need to add the following settings in your config.xml file for Android Accou
 
 ## License
 
-Apache License 2.0
+MIT
 
