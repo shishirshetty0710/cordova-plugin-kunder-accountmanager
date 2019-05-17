@@ -1,3 +1,8 @@
+# 1.0.2
+## Description
+- Added package.json file
+- Compatibility with new Cordova path files
+
 # 1.0.1
 ## Description
 - iOS bug fixed 
