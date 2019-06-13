@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-        id="cordova-plugin-kunder-accountmanager" version="1.0.0">
+        id="cordova-plugin-kunder-accountmanager" version="1.0.2">
     <name>AccountManagerPlugin</name>
     <description>Account Manager cordova plugin for android and keychain for iOS</description>
     <license>Apache 2.0</license>
@@ -9,6 +9,21 @@
     <js-module src="www/AccountManager.js" name="AccountManager">
         <clobbers target="window.AccountManager" />
     </js-module>
+
+    <preference name="ACCOUNT_MANAGER_LABEL"/>
+    <preference name="ACCOUNT_MANAGER_TYPE"/>
+
+    <engines>
+        <engine name="cordova" version=">=8.1.1" />
+    </engines>
+
+    <edit-config mode="merge" file="src/android/res/xml/authenticator.xml" target="/account-authenticator">
+        <account-authenticator 
+            android:accountType="$ACCOUNT_MANAGER_TYPE"
+            android:icon="@drawable/acm_icon"
+            android:smallIcon="@drawable/acm_icon"
+            android:label="@string/authLabel"/>
+    </edit-config>
 
     <platform name="android">
         <config-file target="AndroidManifest.xml" parent="/*">
@@ -42,10 +57,9 @@
         <resource-file src="src/android/res/xml/authenticator.xml" target="res/xml/authenticator.xml" />
         <resource-file src="src/android/res/drawable/acm_icon.png" target="res/drawable/acm_icon.png" />
 
-        <hook type="after_plugin_install" src="hooks/after_plugin_install/001_account_manager_settings.js" />
-        <hook type="before_build" src="hooks/after_plugin_install/001_account_manager_settings.js" />
-        <hook type="before_start" src="hooks/after_plugin_install/001_account_manager_settings.js" />
-        
+        <config-file parent="/*" target="app/src/main/res/values/strings.xml">
+            <string name="authLabel">$ACCOUNT_MANAGER_LABEL</string>
+        </config-file>
     </platform>
 
     <platform name="ios">
