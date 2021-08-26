@@ -56,13 +56,6 @@ public class AccountManagerPlugin extends CordovaPlugin {
             String accountType = args.getString(2);
             Bundle userData = new Bundle();
 
-            try{
-                password = AESCrypt.encrypt(ENCRYPTION_KEY, password);
-            }catch (GeneralSecurityException e){
-                callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR));
-                return false;
-            }
-
             try {
                 JSONObject jsonObject = args.getJSONObject(4);
                 Iterator<?> iterator = jsonObject.keys();
@@ -86,10 +79,29 @@ public class AccountManagerPlugin extends CordovaPlugin {
 
             Account [] accounts = accountManager.getAccountsByType(accountType);
 
+            if(accounts.length == 1) {
+                // Remove existing account
+                if(Build.VERSION.SDK_INT >= 22){
+                    accountManager.removeAccountExplicitly(accounts[0]);
+                }
+                else{
+                    //Deprecated on API 22
+                    accountManager.removeAccount(accounts[0], null, null);
+                }
+                // Refresh accounts array
+                accounts = accountManager.getAccountsByType(accountType);
+            }
+
             if(accounts.length == 0){
                 //No hay cuentas, entonces es posible añadir una
-                
                 Account account = new Account(userAccount, accountType);
+
+                try{
+                    password = AESCrypt.encrypt(ENCRYPTION_KEY, password);
+                }catch (GeneralSecurityException e){
+                    callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR));
+                    return false;
+                }
                 
                 if(accountManager.addAccountExplicitly(account, password, userData)){
                     // Toast.makeText(getApplicationContext(), "Registro de cuenta exitoso", Toast.LENGTH_LONG).show();
@@ -102,24 +114,6 @@ public class AccountManagerPlugin extends CordovaPlugin {
                     // Toast.makeText(getApplicationContext(), "Error al registrar una cuenta!!!", Toast.LENGTH_LONG).show();
                 }
 
-            } else if(accounts.length == 1) {
-                // Actualizar todos los datos con la nueva cuenta
-                Iterator<?> iterator = userData.keys();
-                while (iterator.hasNext()){
-                    String key = (String)iterator.next();
-                    String value = userData.get(key).toString();
-                    try{
-                        key = AESCrypt.encrypt(ENCRYPTION_KEY, key);
-                        value = AESCrypt.encrypt(ENCRYPTION_KEY, value);
-                    }catch (GeneralSecurityException e){
-                        callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR));
-                        return false;
-                    }
-                    
-                    accountManager.setUserData(accounts[0],key,value);
-                }
-                accountManager.setPassword(accounts[0], password);
-                accountManager.renameAccount(accounts[0], userAccount);
             }
             else {
                 //Caso contrario, no se debe realizar el proceso
