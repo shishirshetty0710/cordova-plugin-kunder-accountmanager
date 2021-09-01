@@ -32,6 +32,7 @@
 - (void) initWithKey:(CDVInvokedUrlCommand*)command;
 - (void) addAccount:(CDVInvokedUrlCommand*)command;
 - (void) removeAccount:(CDVInvokedUrlCommand*)command;
+- (void) removeUserPassword:(CDVInvokedUrlCommand*)command;
 - (void) getUserAccount:(CDVInvokedUrlCommand*)command;
 - (void) getPassword:(CDVInvokedUrlCommand*)command;
 - (void) getDataFromKey:(CDVInvokedUrlCommand*)command;

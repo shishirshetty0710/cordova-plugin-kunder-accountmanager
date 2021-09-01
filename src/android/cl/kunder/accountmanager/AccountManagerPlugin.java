@@ -123,7 +123,7 @@ public class AccountManagerPlugin extends CordovaPlugin {
 
             
         }
-        else if(action.equals("removeAccount")){
+        else if(action.equals("removeAccount") || action.equals("removeUserPassword")){
             
             String accountType = args.getString(0);
             Account [] accounts = accountManager.getAccountsByType(accountType);

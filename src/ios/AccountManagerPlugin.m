@@ -75,7 +75,7 @@
 }
 
 - (void) removeAccount:(CDVInvokedUrlCommand*)command{
-    //Implica eliminar todo el keychain
+    // Implica eliminar todo el keychain
     
     self.MyKeychainWrapper = [[KeychainWrapper alloc]init];
     if([self.MyKeychainWrapper removeAllData]){
@@ -86,6 +86,30 @@
         CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString: @"Error al intentar eliminar los datos del keychain"];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     }
+}
+
+- (void) removeUserPassword:(CDVInvokedUrlCommand*)command{
+    NSString *service = (NSString*)[command.arguments objectAtIndex:0];
+    NSString *group = (NSString*)[command.arguments objectAtIndex:1];
+
+    self.MyKeychainWrapper = [[KeychainWrapper alloc]initWithService:service withGroup:group withKey:@"userAccount"];
+    if (![self.MyKeychainWrapper removeData]) {
+        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString: @"Error al intentar eliminar userAccount del keychain"];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        return;
+    }
+
+    self.MyKeychainWrapper = [[KeychainWrapper alloc]initWithService:service withGroup:group withKey:@"password"];
+    if (![self.MyKeychainWrapper removeData]) {
+        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString: @"Error al intentar eliminar password del keychain"];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        return;
+    }
+
+    // TODO: Remove unknow userData
+
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void) getUserAccount:(CDVInvokedUrlCommand*)command{

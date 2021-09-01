@@ -10,8 +10,14 @@ module.exports = (function() {
     cordova.exec(successCallback, errorCallback, 'AccountManagerPlugin', 'addAccount', [userName, password, accountType, group, userData]);
   };
 
+  // For iOS remove all data from keychain. For Android remove all account
   var _removeAccount = function(accountType, successCallback, errorCallback) {
     cordova.exec(successCallback, errorCallback, 'AccountManagerPlugin', 'removeAccount', [accountType]);
+  };
+
+  // For iOS only remove user account and password. For Android remove all account
+  var _removeUserPassword = function(accountType, group, successCallback, errorCallback) {
+    cordova.exec(successCallback, errorCallback, 'AccountManagerPlugin', 'removeUserPassword', [accountType, group]);
   };
 
   var _getUserAccount = function(accountType, group, returnKey, successCallback, errorCallback){
@@ -44,6 +50,7 @@ module.exports = (function() {
     initWithKey: _initWithKey,
     registerAccount: _addAccount,
     removeAccount: _removeAccount,
+    removeUserPassword: _removeUserPassword,
     getUserAccount: _getUserAccount,
     getPassword: _getPassword,
     getDataFromKey: _getDataFromKey,
