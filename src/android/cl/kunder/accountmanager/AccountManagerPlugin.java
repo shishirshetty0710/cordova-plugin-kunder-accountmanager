@@ -79,19 +79,6 @@ public class AccountManagerPlugin extends CordovaPlugin {
 
             Account [] accounts = accountManager.getAccountsByType(accountType);
 
-            if(accounts.length == 1) {
-                // Remove existing account
-                if(Build.VERSION.SDK_INT >= 22){
-                    accountManager.removeAccountExplicitly(accounts[0]);
-                }
-                else{
-                    //Deprecated on API 22
-                    accountManager.removeAccount(accounts[0], null, null);
-                }
-                // Refresh accounts array
-                accounts = accountManager.getAccountsByType(accountType);
-            }
-
             if(accounts.length == 0){
                 //No hay cuentas, entonces es posible añadir una
                 Account account = new Account(userAccount, accountType);
