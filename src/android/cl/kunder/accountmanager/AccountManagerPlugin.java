@@ -56,7 +56,6 @@ public class AccountManagerPlugin extends CordovaPlugin {
             String accountType = args.getString(2);
             Bundle userData = new Bundle();
 
-            
             try {
                 JSONObject jsonObject = args.getJSONObject(4);
                 Iterator<?> iterator = jsonObject.keys();
@@ -82,14 +81,15 @@ public class AccountManagerPlugin extends CordovaPlugin {
 
             if(accounts.length == 0){
                 //No hay cuentas, entonces es posible añadir una
-                
                 Account account = new Account(userAccount, accountType);
+
                 try{
                     password = AESCrypt.encrypt(ENCRYPTION_KEY, password);
                 }catch (GeneralSecurityException e){
                     callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR));
                     return false;
                 }
+                
                 if(accountManager.addAccountExplicitly(account, password, userData)){
                     // Toast.makeText(getApplicationContext(), "Registro de cuenta exitoso", Toast.LENGTH_LONG).show();
                     JSONObject r = new JSONObject();
@@ -110,7 +110,7 @@ public class AccountManagerPlugin extends CordovaPlugin {
 
             
         }
-        else if(action.equals("removeAccount")){
+        else if(action.equals("removeAccount") || action.equals("removeUserPassword")){
             
             String accountType = args.getString(0);
             Account [] accounts = accountManager.getAccountsByType(accountType);
