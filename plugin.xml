@@ -61,20 +61,4 @@
             <string name="authLabel">$ACCOUNT_MANAGER_LABEL</string>
         </config-file>
     </platform>
-
-    <platform name="ios">
-        <config-file target="config.xml" parent="/*">
-            <feature name="AccountManagerPlugin">
-                <param name="ios-package" value="AccountManagerPlugin"/>
-            </feature>
-        </config-file>
-        <header-file src="src/ios/KeychainWrapper.h" />
-        <source-file src="src/ios/KeychainWrapper.m" />
-        <header-file src="src/ios/AccountManagerPlugin.h" />
-        <source-file src="src/ios/AccountManagerPlugin.m" />
-        
-        <framework src="Security.framework" />
-        <framework src="Foundation.framework"/>
-        <framework src="LocalAuthentication.framework"/>
-    </platform>
 </plugin>
