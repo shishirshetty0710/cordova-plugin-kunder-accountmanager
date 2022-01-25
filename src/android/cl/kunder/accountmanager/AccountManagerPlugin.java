@@ -247,7 +247,7 @@ public class AccountManagerPlugin extends CordovaPlugin {
         else if(action.equals("setUserData")){
 
             String accountType = args.getString(0);
-            JSONObject userData = args.getJSONObject(2);
+            JSONObject userData = new JSONObject(args.getString(2));
             Account [] accounts = accountManager.getAccountsByType(accountType);
             if(accounts.length == 0){
                 //No se pueden obtener los datos de la cuenta
