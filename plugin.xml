@@ -47,12 +47,6 @@
                 <param name="android-package" value="cl.kunder.accountmanager.AccountManagerPlugin"/>
             </feature>
         </config-file>
-            
-        <edit-config file="AndroidManifest.xml"
-                 target="/manifest/application"
-                 mode="merge">
-        <application android:allowBackup="false"/>
-        </edit-config>    
 
         <source-file src="src/android/cl/kunder/accountmanager/AccountManagerPlugin.java" target-dir="src/cl/kunder/accountmanager" />
         <source-file src="src/android/cl/kunder/accountmanager/Authenticator.java" target-dir="src/cl/kunder/accountmanager" />
